@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <projectDescription>
-	<name>test</name>
+	<name>wow</name>
 	<comment></comment>
 	<projects>
 	</projects>
@@ -14,4 +14,11 @@
 	<natures>
 		<nature>org.eclipse.jdt.core.javanature</nature>
 	</natures>
+	<linkedResources>
+		<link>
+			<name>src/resource/wrench.png</name>
+			<type>1</type>
+			<location>E:/Java/icons/wrench.png</location>
+		</link>
+	</linkedResources>
 </projectDescription>
