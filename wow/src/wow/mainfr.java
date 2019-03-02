@@ -24,10 +24,14 @@ import javax.swing.JButton;
 import javax.swing.JScrollPane;
 import javax.swing.ScrollPaneConstants;
 import javax.swing.DropMode;
+import javax.swing.JTextField;
+import java.awt.event.ActionListener;
+import java.awt.event.ActionEvent;
 
 public class mainfr {
 
 	private JFrame frmWow;
+	private JTextField textField;
 
 	/**
 	 * Launch the application.
@@ -70,6 +74,10 @@ public class mainfr {
 		tabbedPane.addTab("SQL replace", null, panelSQLReplace, null);
 		panelSQLReplace.setLayout(new MigLayout("", "[grow]", "[50][grow]"));
 		
+		textField = new JTextField();
+		panelSQLReplace.add(textField, "flowx,cell 0 0");
+		textField.setColumns(10);
+		
 		JPanel panelSqlReplaceSettings = new JPanel();
 		panelSQLReplace.add(panelSqlReplaceSettings, "cell 0 0,growx,aligny top");
 		
@@ -98,6 +106,7 @@ public class mainfr {
 		panelVysledek.add(panelVysledekButtons, "cell 0 0,growx,aligny top");
 		
 		JButton btnKoprovatDoSchrnky = new JButton("Kop\u00EDrovat do schr\u00E1nky");
+
 		panelVysledekButtons.add(btnKoprovatDoSchrnky);
 		
 		JTextPane textPaneVysledek = new JTextPane();
@@ -115,7 +124,12 @@ public class mainfr {
 		panelTest.add(panel_2, "cell 0 0,grow");
 		
 
-
+		btnKoprovatDoSchrnky.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				//textField.getText()
+				textPaneVysledek.setText( textPane_2.getText().replaceAll( textField.getText() , "")   );
+			}
+		});
 		
 		JMenuBar menuBar = new JMenuBar();
 		frmWow.setJMenuBar(menuBar);
