@@ -7,7 +7,13 @@ import javax.swing.JMenuBar;
 import javax.swing.JMenu;
 import java.awt.CardLayout;
 import javax.swing.JTabbedPane;
+import javax.swing.JTextArea;
 import javax.swing.border.BevelBorder;
+import javax.swing.event.DocumentEvent;
+import javax.swing.event.DocumentListener;
+import javax.swing.text.BadLocationException;
+import javax.swing.text.Document;
+
 import java.awt.Toolkit;
 import javax.swing.JSplitPane;
 import javax.swing.JPanel;
@@ -39,8 +45,6 @@ public class mainfr {
 	public static void main(String[] args) {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
-				
-					SqlReplace a = new SqlReplace(new String[]{"a","aa"});
 					mainfr window = new mainfr();
 					window.frmWow.setVisible(true);
 				
@@ -87,8 +91,9 @@ public class mainfr {
 		panelSQLReplace.add(splitPane, "cell 0 1,grow");
 		
 		
-		JTextPane textPane_2 = new JTextPane();
-		
+		//JTextPane textPane_2 = new JTextPane();
+		JTextArea textPane_2 = new JTextArea();
+
 		
 		JScrollPane txtpnDfsdfsf = new JScrollPane(textPane_2);
 		txtpnDfsdfsf.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
@@ -109,7 +114,8 @@ public class mainfr {
 
 		panelVysledekButtons.add(btnKoprovatDoSchrnky);
 		
-		JTextPane textPaneVysledek = new JTextPane();
+		JTextArea textPaneVysledek = new JTextArea();
+		textPaneVysledek.setEditable(false);
 		
 		JScrollPane scrollPaneVysledek = new JScrollPane(textPaneVysledek);
 		scrollPaneVysledek.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
@@ -127,9 +133,80 @@ public class mainfr {
 		btnKoprovatDoSchrnky.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				//textField.getText()
-				textPaneVysledek.setText( textPane_2.getText().replaceAll( textField.getText() , "")   );
+				//textPaneVysledek.
+				
+				}
+				
+				//textPaneVysledek.setText( textPane_2.getText().replaceAll( textField.getText().split("\n") , "")   );
 			}
-		});
+		);
+		
+		
+		textPane_2.getDocument().addDocumentListener(
+                    new DocumentListener() {
+						
+						@Override
+						public void removeUpdate(DocumentEvent e) {
+							// TODO Auto-generated method stub
+							
+						}
+						
+						@Override
+						public void insertUpdate(DocumentEvent e) {
+							
+							
+							//for (String line : textPane_2.getText().split("\\n")) System.out.println(line); 
+							
+							
+							SqlReplace rpl = new SqlReplace( textPane_2.getText().split("\n") ); 
+							
+							/*							
+					        int lines = textArea.getLineCount();
+
+					        try{// Traverse the text in the JTextArea line by line
+					            for(int i = 0; i < lines; i ++){
+					                int start = textArea.getLineStartOffset(i);
+					                int end = texttArea.getLineEndOffset(i);
+					                // Implement method processLine
+					                processLine(textArea.getText(start, end-start));
+
+					            }
+					        }catch(BadLocationException e){
+					            // Handle exception as you see fit
+					        }							
+							*/
+							
+							
+							textPaneVysledek.setText("");
+							String[] t = rpl.getToggletText();
+							Document d = textPaneVysledek.getDocument();
+							
+							final String newline = "\n";
+							
+							for (String line : t) textPaneVysledek.append(line+newline); 
+							/*
+							for(int i=0;i<t.length ;i++) {
+								
+								try {
+									d.insertString(d.getLength(), t[i]+"\\n", null);
+								} catch (BadLocationException be) {
+									// TODO Auto-generated catch block
+									be.printStackTrace();
+								}
+							}	
+							*/
+							
+						}
+						
+						@Override
+						public void changedUpdate(DocumentEvent e) {
+							// TODO Auto-generated method stub
+							
+						}
+
+					}  
+				);
+		
 		
 		JMenuBar menuBar = new JMenuBar();
 		frmWow.setJMenuBar(menuBar);

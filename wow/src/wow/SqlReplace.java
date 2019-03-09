@@ -4,35 +4,50 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class SqlReplace {
+	
+	private String[] FOldText;
+	
+	
 	public SqlReplace(String[] textToConvert) {
-		
-	    // String to be scanned to find the pattern.
-	      String line = "This order was placed for QT3000! OK?";
-	      String pattern = "(.*)(\\d+)(.*)";
-	      
-	      String test ="' sdd '+13+ ";
-	      System.out.println("Found value: " + test.replaceAll("'re?", "") );
-	      //Pattern.compile(regex).matcher(str).replaceAll(repl) 
-
-	      // Create a Pattern object
-	      Pattern r = Pattern.compile(pattern);
-
-	      // Now create matcher object.
-	      Matcher m = r.matcher(line);
-	      if (m.find( )) {
-	         System.out.println("Found value: " + m.group(0) );
-	         System.out.println("Found value: " + m.group(1) );
-	         System.out.println("Found value: " + m.group(2) );
-	      }else {
-	         System.out.println("NO MATCH");
-	      }		
-		
-		
-		for(int i=0; i<textToConvert.length; i++ ) {
-			System.out.println(textToConvert[i]);
-		};
-		
+		FOldText = textToConvert;		
 	}
 	
+	private boolean jeVDelphiTvaru() {
+		for(int i=0; i<FOldText.length; i++ ) {
+			if (FOldText[i].replace(" ", "").length()>0) {
+				if (FOldText[i].contains("#13")) {
+					System.out.println("ok v delphi");
+					return true;
+					
+				} else {
+					System.out.println("ne v delphi");
+					return false;
+				}				
+			}
+		
+		}
+		return false;
+	}
+	
+	private String toggle(String radek ,boolean toDelphi) {
+		if (toDelphi) {
+			return "'"+radek.replace("'", "''")+"'#13+";
+		} else {
+			return radek.replace("''", "'").replaceAll("^ *'", "").replaceAll("' *[+]*#13.*\\Z", "");
+		}
+	}
+	
+	public String[] getToggletText() {
+		String[] newText;
+		newText = new String[FOldText.length ];
+				
+		boolean jeVDelphiTv = jeVDelphiTvaru();
+		for(int i=0;i<FOldText.length;i++ ) {			
+			newText[i] = toggle(FOldText[i], !jeVDelphiTv);
+			if (i==FOldText.length) { newText[i] = newText[i].replaceAll("+\\Z", ""); };
+		}
+		
+		return newText;
+	}
 
 }
